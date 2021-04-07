@@ -12,87 +12,138 @@
 
 // 6 - The users high score should appear, the users should be able to submit ther intials.
 
-document.addEventListener('DOMContentLoaded', () => {
-    const timeLeftDisplay = document.querySelector("#time-left")
-    const startBtn = document.querySelector("#start-button")
-    timeLeft = 60
 
-    function countDown() {
-        setInterval(function(){
-            if(timeLeft <= 0) {
-                clearInterval(timeLeft = 0)
-            }
-            timeLeftDisplay.innerHTML = timeLeft
-            timeLeft -=1
-        }, 1000)
-    }
 
-    startBtn.addEventListener('click' , countDown())
-} )
+const startButton = document.getElementById("start-btn")
+const nextButton = document.getElementById("next-btn")
+const questionContainerElement = document.getElementById("question-container")
+const questionElement = document.getElementById("question")
+const answerButtons = document.getElementById("answer-buttons")
+const timeLeftDisplay = document.querySelector("#time-left")
+timeLeft = 60
 
-const startBtn = document.querySelector("#start-button")
-const questionContainerElement = document.querySelector("question-container")
-startBtn.addEventListener("click", startGame())
+let shuffledQuestions, currentQuestionIndex
+
+
+startButton.addEventListener("click", startGame)
+nextButton.addEventListener('click', () => {
+    currentQuestionIndex++
+    setNextQuestion()
+  })
+
+startButton.addEventListener("click", countDown)
+
+// Timer/Countdown Function
+function countDown() {
+    setInterval(function(){
+        if(timeLeft <= 0) {
+            clearInterval(timeLeft = 0)
+        }
+        timeLeftDisplay.innerHTML = timeLeft
+        timeLeft -=1
+    }, 1000)
+}
+
+// Start Game function
 
 function startGame () {
     console.log("Started")
-    startBtn.classList.add("hide")
+    startButton.classList.add("hide")
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    currentQuetsionIndex = 0
     questionContainerElement.classList.remove("hide")
     setNextQuestion ()
 }
 
+function setNextQuestion(){
+    resetState()
+    showQuestion(shuffledQuestions[currentQuestionIndex])
+}
+
+function showQuestion(question) {
+    questionElement.innerText = question.question
+    question.answers.forEach(answer => {
+        const button = document.createElement("button")
+        button.innerText = answer.text
+        button.classList.add("btn")
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener("click", selectAnswer)
+        answerButtonsElement.appendChild(button)
+    })
+}
+
+function resetState() {
+    nextButton.classList.add("hide")
+    while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild
+        (answerButtonsElement.firstChild)
+    }
+}
+
+function selectAnswer() {
+    const selectedButton = e.target
+    const correct = selectedButton.dataset.correct
+    setStatusClass(document.body, correct)
+    Array.from(answerButtonELement.children).forEach(button => {
+        set
+    })
+    if (shuffledQuestions.length > currentQuestionIndex + 1) {
+        nextButton.classList.remove('hide')
+      } else {
+        startButton.innerText = 'Restart'
+        startButton.classList.remove('hide')
+      }
+}
+
+function setStatusClass(element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+      element.classList.add('correct')
+    } else {
+      element.classList.add('wrong')
+    }
+  }
+  
+  function clearStatusClass(element) {
+    element.classList.remove('correct')
+    element.classList.remove('wrong')
+  }
 
 
 // Array of questions
 const questions = [
     {
         question: "Commonly used data types DO NOT include:",
-        choiceA: "strings",
-        choiceB: "booleans",
-        choiceC: "alerts",
-        choiceD: "numbers",
-        correct: "c"
+        answers: [
+            {text: "strings", correct: false },
+            {text: "booleans", correct: false},
+            {text: "alerts", correct: true },
+            {text: "numbers", correct: false}
+        ] 
      },
      {
          question: "The condition in an if / else statement is enclosed within ___.",
-         choiceA: "quotes",
-         choiceB: "curly brackets",
-         choiceC: "parenthesis",
-         choiceD: "square brackets",
-         correct: "b"
+         answers: [  
+            {text: "quotes", correct: false },
+            {text: "curly brackets", correct: true},
+            {text: "parenthesis", correct: false },
+            {text: "square brackets", correct: false}
+        ]
      },
      {
         question: "String values must be enclosed within ____ when being assigned to variables.",
-        choiceA: "commas",
-        choiceB: "curly brackets",
-        choiceC: "quotes",
-        choiceD: "parenthesis",
-        correct: "c"
+        answers: [
+            {text: "commas", correct: false },
+            {text: "curly brackets", correct: false},
+            {text: "quotes", correct: true },
+            {text: "parenthesis", correct: false}
+        ] 
      },
  ]
 
- questions [0].question
- questions [0].choiceA
- questions [0].choiceB
- questions [0].choiceC
- questions [0].choiceD
- questions [0].correct
 
- let lastQuestionIndex = questions.length-1;
- let runningQuestionIndex = 0;
 
- //function renderQuestion (){
-     let q = questions[runningQuestionIndex];
-     question.innerHTML = "<p>" +q.question+ "</p>"
-     choiceA.innerHTML = q.choiceA;
-     choiceB.innerHTML = q.choiceB;
-     choiceC.innerHTML = q.choiceC;
-     choiceD.innerHTML = q.choiceD;
-// }
-
- runningQuestionIndex = 0;
- renderQuestion()
-
- runningQuestionIndex++
- renderQuestion()
+ //function renderQuestion ()
 
