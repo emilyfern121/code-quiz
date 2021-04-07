@@ -1,4 +1,6 @@
-
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
 .score {
     float: left; 
     width: 50%;
@@ -10,6 +12,17 @@
     text-align: right;
 }
 
-h1, p, .container, .controls {
+h1, p, .container  {
     text-align: center;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.hide {
+    display: none;
 }
